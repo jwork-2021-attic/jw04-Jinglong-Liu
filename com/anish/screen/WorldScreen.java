@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-import com.anish.calabashbros.BubbleSorter;
+import com.anish.calabashbros.SelectSorter;
 import com.anish.calabashbros.Calabash;
 import com.anish.calabashbros.Monster;
 import com.anish.calabashbros.World;
@@ -39,7 +39,7 @@ public class WorldScreen implements Screen {
         world.put(bros[5], 20, 10);
         world.put(bros[6], 22, 10);
 */
-        BubbleSorter<Monster> b = new BubbleSorter<>();
+        SelectSorter<Monster> b = new SelectSorter<>();
         b.load(monsters);
         b.sort();
 
@@ -81,7 +81,7 @@ public class WorldScreen implements Screen {
     }
     private void execute(Monster[][] monsters, String step) {
         String[] couple = step.split("<->");
-        getBroByRank(bros, Integer.parseInt(couple[0])).swap(getBroByRank(bros, Integer.parseInt(couple[1])));
+        getMosByRank(monsters, Integer.parseInt(couple[0])).swap(getMosByRank(monsters,Integer.parseInt(couple[1])));
     }
     private Monster getMosByRank(Monster[][] monsters, int rank) {
         for(int i = 0;i < monsters.length;i++){
@@ -120,7 +120,8 @@ public class WorldScreen implements Screen {
     public Screen respondToUserInput(KeyEvent key) {
 
         if (i < this.sortSteps.length) {
-            this.execute(bros, sortSteps[i]);
+            //this.execute(bros, sortSteps[i]);
+            this.execute(monsters, sortSteps[i]);
             i++;
         }
 

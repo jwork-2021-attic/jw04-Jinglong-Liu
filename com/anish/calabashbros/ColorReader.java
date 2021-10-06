@@ -32,7 +32,7 @@ public class ColorReader {
                 rgb[i][j][0] = (pixel &  0xff0000) >> 16;//r
                 rgb[i][j][1] = (pixel &  0xff00) >> 8;//g
                 rgb[i][j][2] = (pixel &  0xff);//b
-                System.out.print(rgb[i][j][0]+" " + rgb[i][j][1] + " " + rgb[i][j][2]);
+                //System.out.print(rgb[i][j][0]+" " + rgb[i][j][1] + " " + rgb[i][j][2]);
                 
             }
         }
