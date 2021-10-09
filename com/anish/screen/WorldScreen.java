@@ -2,14 +2,18 @@ package com.anish.screen;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import com.anish.calabashbros.Calabash;
+import com.anish.calabashbros.DfsSolver;
 import com.anish.calabashbros.World;
 
 import asciiPanel.AsciiPanel;
 import mazeGenerator.MazeGenerator;
 import com.anish.calabashbros.Wall;
 import com.anish.calabashbros.Floor;
+import com.anish.calabashbros.Node;
+import com.anish.calabashbros.Solver;
 public class WorldScreen implements Screen {
 
     private World world;
@@ -18,6 +22,9 @@ public class WorldScreen implements Screen {
     private Calabash guard;
     private MazeGenerator mazeGenerator;
     private int [][]maze;
+    Solver solver;
+    List<Node>path;
+
     public WorldScreen() {
         world = new World();
 
@@ -43,6 +50,11 @@ public class WorldScreen implements Screen {
         
         this.initMaze();
         world.put(guard,0,0);
+        solver = new DfsSolver();
+        solver.load(maze);
+        solver.solve();
+        path = solver.getPath();
+        System.out.println("Press Enter to start...");
     }
     private void initMaze(){
         mazeGenerator = new MazeGenerator(30);
@@ -87,36 +99,20 @@ public class WorldScreen implements Screen {
         }
     }
 
-    int i = 0;
+    int i = 1;
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
         //
-        
-        int x = guard.getX();
-        int y = guard.getY();   
-        switch (key.getKeyCode()){
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_S:
-                y++;
+        switch(key.getKeyCode()){
+            case KeyEvent.VK_ENTER:
+                start();
                 break;
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_W:
-                y--;
-                break;
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_A:
-                x--;
-                break;
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
-                x++;
-                break;
-        }
-        if(isValid(x, y)){
-            world.put(new Floor(world),guard.getX(),guard.getY());
-            guard.moveTo(x, y);
-            //System.out.println(x + " " + y);
+            case KeyEvent.VK_R:
+                //restart();
+                //break;
+            default:
+                doNextSept();
         }
         
         return this;
@@ -127,5 +123,35 @@ public class WorldScreen implements Screen {
         }
         return maze[x][y] == 1;
     }
-
-}
+    private void doNextSept(){
+        if(i < path.size()){
+            int x = path.get(i).getX();
+            int y = path.get(i).getY();
+            world.put(new Floor(world),guard.getX(),guard.getY());
+            guard.moveTo(x, y);
+            i++;
+        }
+    }
+    private void start(){
+        i = 0;
+        world.put(new Floor(world),guard.getX(),guard.getY());
+        guard.moveTo(0,0);
+        t.start();
+    }
+    private Thread t = new Thread(new Runnable(){
+        @Override
+        public void run() {
+            while(i < path.size()){
+                doNextSept();
+                try{
+                    Thread.sleep(200);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                //System.out.println(guard.getX()+" " + guard.getY());
+            }
+            
+        }
+    });
+}   
