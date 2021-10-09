@@ -54,6 +54,7 @@ public class WorldScreen implements Screen {
         solver.load(maze);
         solver.solve();
         path = solver.getPath();
+        System.out.println("Press Enter to start...");
     }
     private void initMaze(){
         mazeGenerator = new MazeGenerator(30);
@@ -132,11 +133,10 @@ public class WorldScreen implements Screen {
         }
     }
     private void start(){
-        t.start();
-    }
-    private void restart(){
+        i = 0;
         world.put(new Floor(world),guard.getX(),guard.getY());
         guard.moveTo(0,0);
+        t.start();
     }
     private Thread t = new Thread(new Runnable(){
         @Override
@@ -144,7 +144,7 @@ public class WorldScreen implements Screen {
             while(i < path.size()){
                 doNextSept();
                 try{
-                    Thread.sleep(300);
+                    Thread.sleep(200);
                 }
                 catch(Exception e){
                     e.printStackTrace();
