@@ -7,7 +7,6 @@ import java.util.Random;
 import com.anish.calabashbros.SelectSorter;
 import com.anish.calabashbros.QuickSorter;
 import com.anish.calabashbros.Sorter;
-import com.anish.calabashbros.Calabash;
 import com.anish.calabashbros.Monster;
 import com.anish.calabashbros.World;
 
@@ -22,26 +21,6 @@ public class WorldScreen implements Screen {
     public WorldScreen() {
         world = new World();
         initMonster();
-        /** 
-        bros = new Calabash[7];
-
-        bros[3] = new Calabash(new Color(204, 0, 0), 1, world);
-        bros[5] = new Calabash(new Color(255, 165, 0), 2, world);
-        bros[1] = new Calabash(new Color(252, 233, 79), 3, world);
-        bros[0] = new Calabash(new Color(78, 154, 6), 4, world);
-        bros[4] = new Calabash(new Color(50, 175, 255), 5, world);
-        bros[6] = new Calabash(new Color(114, 159, 207), 6, world);
-        bros[2] = new Calabash(new Color(173, 127, 168), 7, world);
-
-        world.put(bros[0], 10, 10);
-        world.put(bros[1], 12, 10);
-        world.put(bros[2], 14, 10);
-        world.put(bros[3], 16, 10);
-        world.put(bros[4], 18, 10);
-        world.put(bros[5], 20, 10);
-        world.put(bros[6], 22, 10);
-*/
-        //Sorter<Monster> b = new SelectSorter<>();
         Sorter<Monster> b = new QuickSorter<>();
         b.load(monsters);
         b.sort();
@@ -71,7 +50,7 @@ public class WorldScreen implements Screen {
         }
         for(int i = 0;i < ColorReader.row;i++){
             for(int j = 0;j<ColorReader.col;j++){
-                world.put(monsters[i][j],2*j+10, 2*i + 10);
+                world.put(monsters[i][j],2*j+5, 2*i + 5);
             }
         }
     }
@@ -79,10 +58,6 @@ public class WorldScreen implements Screen {
         return plan.split("\n");
     }
 
-    private void execute(Calabash[] bros, String step) {
-        String[] couple = step.split("<->");
-        getBroByRank(bros, Integer.parseInt(couple[0])).swap(getBroByRank(bros, Integer.parseInt(couple[1])));
-    }
     private void execute(Monster[][] monsters, String step) {
         String[] couple = step.split("<->");
         getMosByRank(monsters, Integer.parseInt(couple[0])).swap(getMosByRank(monsters,Integer.parseInt(couple[1])));
@@ -93,14 +68,6 @@ public class WorldScreen implements Screen {
                 if(monsters[i][j].getRank() == rank){
                     return monsters[i][j];
                 }
-            }
-        }
-        return null;
-    }
-    private Calabash getBroByRank(Calabash[] bros, int rank) {
-        for (Calabash bro : bros) {
-            if (bro.getRank() == rank) {
-                return bro;
             }
         }
         return null;

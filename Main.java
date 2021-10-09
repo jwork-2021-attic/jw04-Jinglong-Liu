@@ -32,7 +32,7 @@ public class Main extends JFrame implements KeyListener {
                     try{
                         repaint();
                         Thread.sleep(50);
-                    }
+                   }
                     catch(Exception e){
                         e.printStackTrace();
                     }
