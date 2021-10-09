@@ -25,7 +25,20 @@ public class Main extends JFrame implements KeyListener {
         screen = new WorldScreen();
         addKeyListener(this);
         repaint();
-
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                while(true){
+                    try{
+                        repaint();
+                        Thread.sleep(50);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override

@@ -6,8 +6,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 public class ColorReader {
-    public static final int row = 8;
-    public static final int col = 8;
+    public static final int row = 16;
+    public static final int col = 16;
     public static int[][][] getColor(){
         int[][][]rgb = new int[row][col][3];
         

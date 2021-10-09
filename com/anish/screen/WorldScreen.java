@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 import com.anish.calabashbros.SelectSorter;
+import com.anish.calabashbros.QuickSorter;
+import com.anish.calabashbros.Sorter;
 import com.anish.calabashbros.Calabash;
 import com.anish.calabashbros.Monster;
 import com.anish.calabashbros.World;
@@ -13,7 +15,7 @@ import asciiPanel.AsciiPanel;
 import com.anish.calabashbros.ColorReader;
 public class WorldScreen implements Screen {
     private World world;
-    private Calabash[] bros;
+    //private Calabash[] bros;
     private Monster[][]monsters;
     String[] sortSteps;
 
@@ -39,11 +41,13 @@ public class WorldScreen implements Screen {
         world.put(bros[5], 20, 10);
         world.put(bros[6], 22, 10);
 */
-        SelectSorter<Monster> b = new SelectSorter<>();
+        //Sorter<Monster> b = new SelectSorter<>();
+        Sorter<Monster> b = new QuickSorter<>();
         b.load(monsters);
         b.sort();
 
         sortSteps = this.parsePlan(b.getPlan());
+        System.out.println("press any key to start...");
     }
     private void initMonster(){
         int [][][] colors = ColorReader.getColor(); 
@@ -67,7 +71,7 @@ public class WorldScreen implements Screen {
         }
         for(int i = 0;i < ColorReader.row;i++){
             for(int j = 0;j<ColorReader.col;j++){
-                world.put(monsters[i][j],2*j+10, i + 10);
+                world.put(monsters[i][j],2*j+10, 2*i + 10);
             }
         }
     }
@@ -118,14 +122,36 @@ public class WorldScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        
 
+        //if (i < this.sortSteps.length) {
+            //this.execute(bros, sortSteps[i]);
+        //    this.execute(monsters, sortSteps[i]);
+        //    i++;
+        //}
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while(true){
+                    try{
+                        doNextStep();
+                        Thread.sleep(50);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+        
+        return this;
+    }
+    private void doNextStep(){
         if (i < this.sortSteps.length) {
             //this.execute(bros, sortSteps[i]);
             this.execute(monsters, sortSteps[i]);
             i++;
         }
-
-        return this;
     }
-
 }
